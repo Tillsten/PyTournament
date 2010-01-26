@@ -17,6 +17,8 @@ class Single_team(object):
         self.played_teams = []
     def __str__(self):
         return str(self.player1)
+    def __len__(self):
+        return 1
     
 class Double_team(object):
     def __init__(self, player1, player2):
@@ -37,15 +39,16 @@ class Game(object):
     
     def __init__(self, team1, team2, sets = 1):
         self.status = Game.is_open
-        self.result = None
         self.team1 = team1
         self.team2 = team2
-        
+        self.winner = (team1, team2)
+        self.loser = (team1, team2)
+        self.result = None
     def insert_result(self, result):
         '''Method to insert the result of a game. 
         Result is a list of tuples, one for each set.
         '''
-        self.result = result
+        self.result = result        
         self.status = Game.is_finnished
         won_sets = 0
         
@@ -65,7 +68,16 @@ class Game(object):
                 self.winner = self.team2
     
     def __str__(self):
-        r = "".join(["", str(self.team1), "  vs  ", str(self.team2)])        
+        
+        if len(self.team1) == 1:
+            t1 = str(self.team1) 
+        else: t2 = str(self.team1[0]) + ' or ' + str(self.team1[1])
+        if  len(self.team2) == 1:
+            t2 = str(self.team2)
+        else: 
+            t2 = str(self.team2[0]) + ' or ' + str(self.team2[1])
+        r = "".join(["", t1, "  vs  ", t2])
+                    
         if self.result != None:
             r += "   ".join([str(i) for i in self.result]) 
             r += "".join(["   Winner: ", str(self.winner)])            
@@ -80,6 +92,8 @@ if __name__ == '__main__':
     dieter = Single_team(Player("Dieter", "D.", 3))
     g1 = Game(anton, bart)
     g2 = Game(caro, dieter)
+    g3 = Game(caro, (dieter, bart))
+    print g3
     print g1
     g1.insert_result([(6, 4), (3, 6), (6, 1)])
     print g1
