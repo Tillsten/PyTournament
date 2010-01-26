@@ -57,13 +57,18 @@ class Game(object):
         if won_sets == 0:
             self.winner = None
         else: 
-            if won_sets > 0: self.winner = self.team1
-            else: self.winner = self.team2
+            if won_sets > 0: 
+                self.winner = self.team1
+                self.loser = self.team2
+            else: 
+                self.loser = self.team1
+                self.winner = self.team2
     
     def __str__(self):
-        r = "".join(["Team A: ", str(self.team1), "  Team B:  ", str(self.team2)])        
+        r = "".join(["", str(self.team1), "  vs  ", str(self.team2)])        
         if self.result != None:
-            r += "".join(["\n", str(self.result), "\n", "Sieger: ", str(self.winner)])            
+            r += "   ".join([str(i) for i in self.result]) 
+            r += "".join(["   Winner: ", str(self.winner)])            
         return r             
         
             
